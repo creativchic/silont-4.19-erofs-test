@@ -1063,7 +1063,7 @@ int avc_has_extended_perms(struct selinux_state *state,
 
 	node = avc_lookup(state->avc, ssid, tsid, tclass);
 	if (unlikely(!node)) {
-		node = avc_compute_av(state, ssid, tsid, tclass, &avd, xp_node);
+		avc_compute_av(state, ssid, tsid, tclass, &avd, xp_node);
 	} else {
 		memcpy(&avd, &node->ae.avd, sizeof(avd));
 		xp_node = node->ae.xp_node;
@@ -1155,7 +1155,7 @@ inline int avc_has_perm_noaudit(struct selinux_state *state,
 
 	node = avc_lookup(state->avc, ssid, tsid, tclass);
 	if (unlikely(!node))
-		node = avc_compute_av(state, ssid, tsid, tclass, avd, &xp_node);
+		avc_compute_av(state, ssid, tsid, tclass, avd, &xp_node);
 	else
 		memcpy(avd, &node->ae.avd, sizeof(*avd));
 
