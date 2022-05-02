@@ -63,7 +63,7 @@ struct policydb_compat_info {
 };
 
 /* These need to be updated if SYM_NUM or OCON_NUM changes */
-static struct policydb_compat_info policydb_compat[] = {
+static const struct policydb_compat_info policydb_compat[] = {
 	{
 		.version	= POLICYDB_VERSION_BASE,
 		.sym_num	= SYM_NUM - 3,
@@ -161,18 +161,16 @@ static struct policydb_compat_info policydb_compat[] = {
 	},
 };
 
-static struct policydb_compat_info *policydb_lookup_compat(int version)
+static const struct policydb_compat_info *policydb_lookup_compat(int version)
 {
 	int i;
-	struct policydb_compat_info *info = NULL;
 
 	for (i = 0; i < ARRAY_SIZE(policydb_compat); i++) {
-		if (policydb_compat[i].version == version) {
-			info = &policydb_compat[i];
-			break;
-		}
+		if (policydb_compat[i].version == version)
+			return &policydb_compat[i];
 	}
-	return info;
+
+	return NULL;
 }
 
 /*
@@ -316,7 +314,7 @@ static int cat_destroy(void *key, void *datum, void *p)
 	return 0;
 }
 
-static int (*destroy_f[SYM_NUM]) (void *key, void *datum, void *datap) = {
+static int (*const destroy_f[SYM_NUM]) (void *key, void *datum, void *datap) = {
 	common_destroy,
 	cls_destroy,
 	role_destroy,
@@ -671,7 +669,7 @@ static int cat_index(void *key, void *datum, void *datap)
 	return 0;
 }
 
-static int (*index_f[SYM_NUM]) (void *key, void *datum, void *datap) = {
+static int (*const index_f[SYM_NUM]) (void *key, void *datum, void *datap) = {
 	common_index,
 	class_index,
 	role_index,
@@ -1639,7 +1637,8 @@ bad:
 	return rc;
 }
 
-static int (*read_f[SYM_NUM]) (struct policydb *p, struct symtab *s, void *fp) = {
+static int (*const read_f[SYM_NUM]) (struct policydb *p,
+				     struct symtab *s, void *fp) = {
 	common_read,
 	class_read,
 	role_read,
@@ -2210,7 +2209,7 @@ out:
 	return rc;
 }
 
-static int ocontext_read(struct policydb *p, struct policydb_compat_info *info,
+static int ocontext_read(struct policydb *p, const struct policydb_compat_info *info,
 			 void *fp)
 {
 	int i, j, rc;
@@ -2406,7 +2405,7 @@ int policydb_read(struct policydb *p, void *fp)
 	u32 len, nprim, nel, perm;
 
 	char *policydb_str;
-	struct policydb_compat_info *info;
+	const struct policydb_compat_info *info;
 
 	policydb_init(p);
 
@@ -3248,8 +3247,7 @@ static int user_write(void *vkey, void *datum, void *ptr)
 	return 0;
 }
 
-static int (*write_f[SYM_NUM]) (void *key, void *datum,
-				void *datap) = {
+static int (*const write_f[SYM_NUM]) (void *key, void *datum, void *datap) = {
 	common_write,
 	class_write,
 	role_write,
@@ -3260,7 +3258,7 @@ static int (*write_f[SYM_NUM]) (void *key, void *datum,
 	cat_write,
 };
 
-static int ocontext_write(struct policydb *p, struct policydb_compat_info *info,
+static int ocontext_write(struct policydb *p, const struct policydb_compat_info *info,
 			  void *fp)
 {
 	unsigned int i, j, rc;
@@ -3617,7 +3615,7 @@ int policydb_write(struct policydb *p, void *fp)
 	__le32 buf[4];
 	u32 config;
 	size_t len;
-	struct policydb_compat_info *info;
+	const struct policydb_compat_info *info;
 
 	/*
 	 * refuse to write policy older than compressed avtab
