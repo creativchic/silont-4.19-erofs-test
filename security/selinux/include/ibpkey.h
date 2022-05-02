@@ -24,6 +24,8 @@
 #ifndef _SELINUX_IB_PKEY_H
 #define _SELINUX_IB_PKEY_H
 
+#include <linux/types.h>
+
 #ifdef CONFIG_SECURITY_INFINIBAND
 void sel_ib_pkey_flush(void);
 
