@@ -70,6 +70,7 @@
 #include <linux/userfaultfd_k.h>
 #include <linux/dax.h>
 #include <linux/oom.h>
+#include <linux/file.h>
 
 #include <trace/events/kmem.h>
 

@@ -2104,7 +2104,7 @@ static unsigned move_active_pages_to_lru(struct lruvec *lruvec,
 			if (unlikely(PageCompound(page))) {
 				spin_unlock_irq(&pgdat->lru_lock);
 				mem_cgroup_uncharge(page);
-				(*get_compound_page_dtor(page))(page);
+				destroy_compound_page(page);
 				spin_lock_irq(&pgdat->lru_lock);
 			} else
 				list_add(&page->lru, pages_to_free);
