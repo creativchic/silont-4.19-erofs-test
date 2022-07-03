@@ -883,20 +883,6 @@
 		};
 
 		cooling-maps {
-			soc_map4 {
-				trip = <&pm660_low_soc>;
-				cooling-device =
-					<&cpu4_isolate THERMAL_MAX_LIMIT
-						THERMAL_MAX_LIMIT>;
-			};
-
-			soc_map5 {
-				trip = <&pm660_low_soc>;
-				cooling-device =
-					<&cpu5_isolate THERMAL_MAX_LIMIT
-						THERMAL_MAX_LIMIT>;
-			};
-
 			soc_map6 {
 				trip = <&pm660_low_soc>;
 				cooling-device =
